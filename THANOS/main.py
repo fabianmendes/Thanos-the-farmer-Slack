@@ -1,37 +1,42 @@
 from slackclient import SlackClient
+from slackeventapi import SlackEventAdapter
 import schedule
 import time
 import os
 
-slack_token = os.environ["SLACK_SIGNING_SECRET"]  # lo haré con el secret signing.
+BOT_NAME = "thanos"
+slack_token = os.environ["SLACK_SIGNING_SECRET"]  # I'll do it w/ secret signing.
 sc = SlackClient(slack_token)
 
-sea = SlackEventAdapter(SLACK_SIGNING_SECRET, endpoint="/slack/events")
-
+sea = SlackEventAdapter(slack_token, endpoint="/slack/events")
+										#  SLACK_SIGNING_SECRET,
+										
 @sea.on("hear")
 def handle_message(event_data):
 	hear = event_data["event"]
-
-if hear.get("subtype") is None and "hi" in hear.get['text']:
-	greetings = "Hello <@%s>! :tada:" % hear["user"]
-	say(greetings)
+	return hear
+hear = handle_message()
 
 def whispper():
 	somebody = hear["user"]
 	return somebody
 
 def say(something, towho = False):
+	global channel
 	channel = hear["channel"]
 	tosay = something
-	sc.apicall("chat.postMessage",
+	return sc.apicall("chat.postMessage",
 						channel = channel,
-						text = tosay
+						text = tosay,
 						user = towho)		
 
+if hear.get("subtype") is None and "hi" in hear.get['text']:
+	greetings = "Hello <@%s>! :tada:" % hear["user"]
+	say(greetings)
 
 count = 0
 
-quantite = 0 #número de necesidades
+quantite = 0  # número de necesidades
 
 
 def need(number):
@@ -42,69 +47,137 @@ def end(game):
 	return schedule.cancel_job(game)
 
 def convertlist(mot):
+	#
+
 	mot = []
 	'''TODO. Done: pasar la palabra en sí a una lista!
 	Y si dicha palabra se encuentra ya en una lista, 
 	'''
-	return mot # lista
+	return mot  # lista (lists)
 
 def addtolist(self, what):
 	self.append = what
-	# devuelve la lista 'actualizada'
+	# devuelve la lista 'actualizada'. Añade la palabra a la lista.
 
 def nextword(string, position):
-	#from list! Para la 2da siembra y las votaciones.
+	#from list! Para la 2da siembra, y las votaciones.
 	word = string[position]
-	return word # TODO 
+	return word  # TODO
 
 
 repetidas = {}
 def checking(ou, t):
 	# ou = word
 	# t  = list
-	
 	for n in range(3):
 		if ou in t(n + 1): # needs
 			if ou not in repetidas:
 				repetidas[ou] = 0
 
 			repetidas[ou] = + 1
-						#continuar. Echarle un ojo! Fue lo  ultimo que escribí
-						# ..esta raro esta funcion, tenia sueño ya. LISTO
+			'''
+			#continuar. Echarle un ojo! Fue lo  ultimo que escribí		
+			# ..esta raro esta funcion, tenia sueño ya. LISTO :) '''
 
-# TODO add the slack_client.apicall SEND (say) message.
-def say():
-	sc.api_call(
-		""
-	)
-	return
-
-
+'''
 seeds = { "need1" : 0,
-					"need2" : 0,
-					"need3" : None}
+		  "need2" : 0,
+		  "need3" : None}
+'''
+class Seeds:
+		
+		def __init__(self, seed):
+			# its 'name', e. g. need1 = Seeds('')
+			'''The name will be 'need'+ str(number) <- it is need(), formely.'''
+			# need1 = blablah
+			# need1.add_mot('mot')
+			# then, need1.mots -> ['', '', 'etc']
+			self.seed = seed
+			self.mots = []
 
-def mot1harvest(cuenta, nro):
+		def add_mot(self, mot):
+			self.mots.append(mot)
+			self.submots = []
+
+		def add_submot(self, submot):
+			self.submots.append(mot)
+
+
+
+def mot2harvest(nro, dicc,):
+	counter = 0
+	
+	for x in range(nro + 1):
+		
+
+	return None  #building it...
+
+
+def mot1harvest(nro, cuenta=0):
+	cuenta = + 1
+	seed = need(cuenta)  # llamo seed a las necesidades primas.
+		
+	say(seed)  # tell = ..DONE.
+	# ^ el say debe ir aquí para que pueda decir la NECESIDAD.
+	'''say = None # función que hace decir algo, y la de Needs.
+	reemplazado por 'tell'.''' # not after all haha.
+	seeds[seed] = convertlist(seeds[seed])
+	# aquí se está convirtiendo en lista el 'value' de la necesidad prima.
 
 	if cuenta < nro:
-		seed= need(cuenta)  # llamo seed a las necesidades primas.
-		
-		tell = 
-		# ^ el say debe ir aquí para que pueda decir la NECESIDAD.
-		seeds[seed] = convertlist(seeds[seed])
-
-		"""say = None # función que hace decir algo, y la de Needs.
-		reemplazado por 'tell'."""
-
-		cuenta =+ 1
-		return cuenta #say
+		return cuenta
 	else:
-		seed= need(cuenta)  # llamo seed a las necesidades primas
-		convertlist(seed)
+		end(mot1harvest)
+		time.sleep(60)
 
-		blah = None
-			#say
-				
-		return end(mot1harvest)
+		return mot2harvest(nro, seeds) #TODO.
 
-schedule.every(60).seconds(mot1harvest(count, quantite,))
+
+userPrepare = ["start", "La siembra", "harvest", "la siembra", "sembrar"]
+def uP():
+	for i in range(len(userPrepare) + 1):
+		up = userPrepare[i]
+		return up
+if hear.get("subtype") is None and uP() in hear.get['text']:
+	principal = whispper
+	comeon = "Give me/dame the seeds/las semillas, <@%s>" % hear["user"]
+	say(comeon)
+
+users = []
+def soul():
+	api_call = sc.api_call("users.list")
+	if api_call.get('ok'):
+		users = api_call.get('members')
+		for user in users:
+			if 'name' in user and user.get('name') == (BOT_NAME or "Thanos"):
+				global BOT_ID
+				BOT_ID = '<@{}>'.format(user.get('id'))
+		return users
+
+
+participants = {principal, }   # (sets).
+# done_TODO HEAR THE MESSAGE AND SAVE THE SEEDS/NEEDS into the dictionary "seeds".
+if hear.get("subtype") is None and (whispper == principal) and (len(participants) == 1):
+	necesidades = hear.get['text']
+	aux = necesidades.split(" " and "," and ("y" or "and"))
+
+	for x in range(1, len(aux) + 1):
+		seeds[need(x)] = aux(x)
+
+	say("Registrado, necesidades: " + print(seeds), whispper)
+	
+	soul()
+	while True:
+
+		time.sleep(1)
+		if hear.get("subtype", whispper) is None and ("listo" or "ready"):
+			break
+		if hear.get("subtype") is None and ("yo" or "Yo" or "I" or "i" or ":raising_han:") in hear.get['text']:
+			participants.add(whispper())
+
+schedule.every(60).seconds.do(mot1harvest(quantite=len(aux)), count)
+
+def listen():
+	# debe ser usado para escuchar cada una de las palabras escritas por los usuarios.
+
+	return None
