@@ -116,8 +116,8 @@ def mot1harvest(nro, cuenta=0):
 		return mot2harvest(nro, seeds) #TODO.
 
 
-userPrepare = ["start", "La siembra", "harvest", "la siembra", "sembrar"]
-def uP():
+def uP(): # getting ready!
+  userPrepare = ["start", "La siembra", "harvest", "la siembra", "sembrar"]
 	for i in range(len(userPrepare) + 1):
 		up = userPrepare[i]
 		return up # user prepare
@@ -133,18 +133,21 @@ users = []
 def soul():
 	api_call = sc.api_call("users.list")
 	if api_call.get('ok'):
-		users = api_call.get('members')
-		for user in users:
+		members = api_call.get('members')
+		for user in members:
 			if 'name' in user and user.get('name') == (BOT_NAME or "Thanos"):
 				global BOT_ID
 				BOT_ID = '<@{}>'.format(user.get('id'))
+    users = api_call
 		return users
 
 
-participants = {principal, }   # (sets).
-# done_TODO HEAR THE MESSAGE AND SAVE THE SEEDS/NEEDS into the dictionary "seeds".
+participants = {principal, } '''  # (sets).
+ done_TODO HEAR THE MESSAGE AND SAVE THE SEEDS/NEEDS into the dictionary "seeds".'''
 if hear.get("subtype") is None and (whispper == principal) and (len(participants) == 1):
   banned = ['', " ", ",", "y", "and", "et"]
+  # ^ later we should create a properly file! (AI alike, huh).
+
   for y in range(len(banned)):
     aux = hear["text"]
     
@@ -157,10 +160,10 @@ if hear.get("subtype") is None and (whispper == principal) and (len(participants
       seeds[need(x)] = d.seed  # dict[key] = value
   # print(need(x)) -> prints that respective value !
   # need(x).add_mot(WORD) # adds a mot into the [value] Seed class.
-
-	say("Registrado, necesidades: " + print(seeds), whispper)
+  say("Registrado, necesidades: " + print(seeds), whispper)
 	
-	soul()
+	@soul()
+  # now, we start to ask people who wants to join the harvesting!
 	while True:
 
 		time.sleep(1)
@@ -169,8 +172,7 @@ if hear.get("subtype") is None and (whispper == principal) and (len(participants
 		if hear.get("subtype") is None and ("yo" or "Yo" or "I" or "i" or ":raising_han:" or "me" or 'moi' or ) in hear.get['text']:
 			participants.add(whispper())
 
-soul()  # now, we start to ask people who wants to join the harvesting!
-# ..until 
+say("Ok, let's start!")
 
-schedule.every(60).seconds.do(mot1harvest(quantite=len(aux)), count)
+schedule.every(60).seconds.do(mot1harvest(quantite=len(aux), count)
 
