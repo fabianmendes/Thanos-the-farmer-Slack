@@ -1,7 +1,6 @@
 from slackclient import SlackClient
 from slackeventapi import SlackEventAdapter
 import schedule
-import time
 import os
 
 BOT_NAME = "thanos"
@@ -40,11 +39,8 @@ quantite = 0  # número de necesidades
 
 
 def need(number):
-	needl = "need" + str(number + 1)
+	needl = "need" + str(number + 1) 
 	return needl
-
-def end(game):
-	return schedule.cancel_job(game)
 
 
 repetidas = {}
@@ -61,11 +57,11 @@ def checking(ou, t):
 			#continuar. Echarle un ojo! Fue lo  ultimo que escribí		
 			# ..esta raro esta funcion, tenia sueño ya. LISTO :) '''
 
-'''
+
 seeds = { "need1" : 0,
 		  "need2" : 0,
-		  "need3" : None}
-'''
+		  "need3" : 0} # I've forgotten to uncomment this dict!
+
 class Seed:
 		
 		def __init__(self, seed):
@@ -96,24 +92,29 @@ def mot2harvest(nro, dicc,):
 	return None  #building it...
 
 
-def mot1harvest(nro, cuenta=0):
-	cuenta = + 1
-	seed = need(cuenta)  # llamo seed a las necesidades primas.
-		
-	say(seed)  # tell = ..DONE.
-	# ^ el say debe ir aquí para que pueda decir la NECESIDAD.
-	'''say = None # función que hace decir algo, y la de Needs.
-	reemplazado por 'tell'.''' # not after all haha.
-	seeds[seed] = convertlist(seeds[seed])
-	# aquí se está convirtiendo en lista el 'value' de la necesidad prima.
+def mot1harvest(quantite, cuenta = 0):
+  
+  planted = need(cuenta)
+  cuenta = + 1 
 
-	if cuenta < nro:
+  # planted.add_mot('input') ..it has to be in the listening.
+  say(print(seeds[planted])
+
+  if cuenta < quantite: # quantite = len(aux) <- Seeds.
 		return cuenta
 	else:
 		end(mot1harvest)
-		time.sleep(60)
 
-		return mot2harvest(nro, seeds) #TODO.
+		#time.sleep(60) # this function can't be.. 'cause we need Thanos keeps listening the words!
+
+    def timeSleep():
+      schedule.every().minute.do(schedule.clear('1st')).tag('1st') # making sure it'll do it just once.
+    
+      return mot2harvest(#nro, seeds) ..nope TODO.
+                      # ^ Still blding..
+
+
+		return schedule.every().minute.do(timeSleep()).tag('1st', 'harvest')
 
 
 def uP(): # getting ready!
@@ -127,7 +128,6 @@ if hear.get("subtype") is None and uP() in hear.get['text']:
 	principal = whispper
 	comeon = "Give me/dame the seeds/las semillas, <@%s>" % hear["user"]
 	say(comeon)
-
 
 users = []
 def soul():
@@ -176,3 +176,6 @@ say("Ok, let's start!")
 
 schedule.every(60).seconds.do(mot1harvest(quantite=len(aux), count)
 
+while True:
+  if  count > 0:
+    
