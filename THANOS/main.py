@@ -46,24 +46,6 @@ def need(number):
 def end(game):
 	return schedule.cancel_job(game)
 
-def convertlist(mot):
-	#
-
-	mot = []
-	'''TODO. Done: pasar la palabra en sí a una lista!
-	Y si dicha palabra se encuentra ya en una lista, 
-	'''
-	return mot  # lista (lists)
-
-def addtolist(self, what):
-	self.append = what
-	# devuelve la lista 'actualizada'. Añade la palabra a la lista.
-
-def nextword(string, position):
-	#from list! Para la 2da siembra, y las votaciones.
-	word = string[position]
-	return word  # TODO
-
 
 repetidas = {}
 def checking(ou, t):
@@ -84,14 +66,16 @@ seeds = { "need1" : 0,
 		  "need2" : 0,
 		  "need3" : None}
 '''
-class Seeds:
+class Seed:
 		
 		def __init__(self, seed):
 			# its 'name', e. g. need1 = Seeds('')
 			'''The name will be 'need'+ str(number) <- it is need(), formely.'''
-			# need1 = blablah
-			# need1.add_mot('mot')
-			# then, need1.mots -> ['', '', 'etc']
+      # EXAMPLE: 
+			# mot = message['text'] <- it's relation w/ hear= handle_message()
+      # needl = need()
+			# needl.add_mot('mot')
+			# then, if we print(need1.mot) -> ['', '', 'etc']
 			self.seed = seed
 			self.mots = []
 
@@ -103,12 +87,11 @@ class Seeds:
 			self.submots.append(mot)
 
 
-
 def mot2harvest(nro, dicc,):
 	counter = 0
 	
-	for x in range(nro + 1):
-		
+	for x in range(nro):
+		needl = need(x)
 
 	return None  #building it...
 
@@ -137,11 +120,14 @@ userPrepare = ["start", "La siembra", "harvest", "la siembra", "sembrar"]
 def uP():
 	for i in range(len(userPrepare) + 1):
 		up = userPrepare[i]
-		return up
+		return up # user prepare
+
+global principal
 if hear.get("subtype") is None and uP() in hear.get['text']:
 	principal = whispper
 	comeon = "Give me/dame the seeds/las semillas, <@%s>" % hear["user"]
 	say(comeon)
+
 
 users = []
 def soul():
@@ -158,11 +144,19 @@ def soul():
 participants = {principal, }   # (sets).
 # done_TODO HEAR THE MESSAGE AND SAVE THE SEEDS/NEEDS into the dictionary "seeds".
 if hear.get("subtype") is None and (whispper == principal) and (len(participants) == 1):
-	necesidades = hear.get['text']
-	aux = necesidades.split(" " and "," and ("y" or "and"))
+  banned = ['', " ", ",", "y", "and", "et"]
+  for y in range(len(banned)):
+    aux = hear["text"]
+    
+    supre = banned[y]
+    if supre in aux:
+      aux.remove(supre)
+  for x in range(len(aux)):
+      d = Seed(aux[x])
 
-	for x in range(1, len(aux) + 1):
-		seeds[need(x)] = aux(x)
+      seeds[need(x)] = d.seed  # dict[key] = value
+  # print(need(x)) -> prints that respective value !
+  # need(x).add_mot(WORD) # adds a mot into the [value] Seed class.
 
 	say("Registrado, necesidades: " + print(seeds), whispper)
 	
@@ -172,12 +166,11 @@ if hear.get("subtype") is None and (whispper == principal) and (len(participants
 		time.sleep(1)
 		if hear.get("subtype", whispper) is None and ("listo" or "ready"):
 			break
-		if hear.get("subtype") is None and ("yo" or "Yo" or "I" or "i" or ":raising_han:") in hear.get['text']:
+		if hear.get("subtype") is None and ("yo" or "Yo" or "I" or "i" or ":raising_han:" or "me" or 'moi' or ) in hear.get['text']:
 			participants.add(whispper())
+
+soul()  # now, we start to ask people who wants to join the harvesting!
+# ..until 
 
 schedule.every(60).seconds.do(mot1harvest(quantite=len(aux)), count)
 
-def listen():
-	# debe ser usado para escuchar cada una de las palabras escritas por los usuarios.
-
-	return None
