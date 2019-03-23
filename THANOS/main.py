@@ -4,7 +4,7 @@ import schedule
 import os
 
 BOT_NAME = "thanos"
-slack_token = os.environ["SLACK_SIGNING_SECRET"]  # I'll do it w/ secret signing.
+slack_token = os.environ["SLACK_SIGNING_SECRET"] # I'll do it w/ secret signing.
 sc = SlackClient(slack_token)
 
 sea = SlackEventAdapter(slack_token, endpoint="/slack/events")
@@ -34,7 +34,7 @@ if hear.get("subtype") is None and "hi" in hear.get['text']:
 	say(greetings)
 
 count = 0
-
+hand = True
 quantite = 0  # número de necesidades
 
 
@@ -60,10 +60,10 @@ def checking(ou, t):
 
 seeds = { "need1" : 0,
 		  "need2" : 0,
-		  "need3" : 0} # I've forgotten to uncomment this dict!
+		  "need3" : 0}
 
 class Seed:
-		
+
 		def __init__(self, seed):
 			# its 'name', e. g. need1 = Seeds('')
 			'''The name will be 'need'+ str(number) <- it is need(), formely.'''
@@ -83,13 +83,24 @@ class Seed:
 			self.submots.append(mot)
 
 
-def mot2harvest(nro, dicc,):
-	counter = 0
+def mot2harvest(nro):
+	#nro de 'cuenta'.
+  global nro  
+  hand = False
+  counter = 0
 	
-	for x in range(nro):
-		needl = need(x)
+  while nro > 0: # it should start with 2 or 3, and decreasing.
+	  nro = - 1
 
-	return None  #building it...
+    needl = need(counter) # c'est le même qui 
+    say()
+  
+
+  say()# -->  the words added into the list add_mot() !
+
+
+  
+	return say()  #building it...
 
 
 def mot1harvest(quantite, cuenta = 0):
@@ -109,10 +120,10 @@ def mot1harvest(quantite, cuenta = 0):
 
     def timeSleep():
       schedule.every().minute.do(schedule.clear('1st')).tag('1st') # making sure it'll do it just once.
-    
-      return mot2harvest(#nro, seeds) ..nope TODO.
-                      # ^ Still blding..
 
+      say("2nd -")
+      return mot2harvest(cuenta) #nro, seeds) ..nope TODO.
+                      # ^ Still blding..
 
 		return schedule.every().minute.do(timeSleep()).tag('1st', 'harvest')
 
@@ -129,8 +140,9 @@ if hear.get("subtype") is None and uP() in hear.get['text']:
 	comeon = "Give me/dame the seeds/las semillas, <@%s>" % hear["user"]
 	say(comeon)
 
-users = []
+
 def soul():
+  global users
 	api_call = sc.api_call("users.list")
 	if api_call.get('ok'):
 		members = api_call.get('members')
@@ -148,6 +160,9 @@ if hear.get("subtype") is None and (whispper == principal) and (len(participants
   banned = ['', " ", ",", "y", "and", "et"]
   # ^ later we should create a properly file! (AI alike, huh).
 
+  ''' I've just realized that this next before decoration could be a
+  function, in fact this is "the SEEDING", so it'd be actually -def-
+  seeding():                    '''
   for y in range(len(banned)):
     aux = hear["text"]
     
@@ -160,22 +175,31 @@ if hear.get("subtype") is None and (whispper == principal) and (len(participants
       seeds[need(x)] = d.seed  # dict[key] = value
   # print(need(x)) -> prints that respective value !
   # need(x).add_mot(WORD) # adds a mot into the [value] Seed class.
-  say("Registrado, necesidades: " + print(seeds), whispper)
+  sayP = "Registrado, necesidades: " + print(seeds)
+  say(sayP, whispper)
 	
 	@soul()
   # now, we start to ask people who wants to join the harvesting!
 	while True:
 
 		time.sleep(1)
-		if hear.get("subtype", whispper) is None and ("listo" or "ready"):
-			break
+		if hear.get("subtype", whispper) is None and ("listo" or "ready") in hear.get["text"]:
+      participants = list(participants)
+      # I would like to print all participants. And if we are in Slack, Thanos as BOT should show it as an attachment.
+      # But well- as simple/easily to do so, first; It's necessary to have in mind the thing about be able in being 'compatible' w/ the next versions after completing the Slack BOT. (I mean, Telegram and whatsapp) But I know, let's get FOCUS!
+      
+			break 
 		if hear.get("subtype") is None and ("yo" or "Yo" or "I" or "i" or ":raising_han:" or "me" or 'moi' or ) in hear.get['text']:
 			participants.add(whispper())
+@say("Ok, let's start!")
 
-say("Ok, let's start!")
+start = mot1harvest(len(aux))
+schedule.every(60).seconds.do(mot1harvest(quantite=len(aux), start)))
 
-schedule.every(60).seconds.do(mot1harvest(quantite=len(aux), count)
 
-while True:
+if hear.get("subtype") is None and (whispper == )
+
+
+while hand:
   if  count > 0:
-    
+     mot2harvest(nro)
