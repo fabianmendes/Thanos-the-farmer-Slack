@@ -96,11 +96,7 @@ def checking(out):
 				  repetidas[out] = 0
 
         repetidas[out] = + 1
-  '''
-    # just for a formaly
-    # close of this (def)
-    # function: '''
-  return None
+    return
 
 
 
@@ -213,6 +209,7 @@ if hear.get("subtype") is None and (whispper == principal) and (len(participants
   function, in fact this is "the SEEDING", so it'd be actually -def-
   seeding():                    '''
   for y in range(len(banned)):
+    global aux
     aux = hear["text"]
     
     supre = banned[y]
@@ -245,4 +242,46 @@ if hear.get("subtype") is None and (whispper == principal) and (len(participants
 schedule.every(60).seconds.do(harvesting())
 harvesting()
 # -----------------. Done, good so far! [27.mar'19 - 01:44PM]
+
+def voting():
+  palm = {} # set 'local'. 
+  def passing(): # returns False
+    return False
+
+
+  for n in range(len(aux)): # 'getting gems'? Or energy..
+    candide = set(need(n).mot)
+    candido = set(need(n).submot)
+    for e in range(len(candide)):
+      palm.add(list(candide)[e])
+    for o in range(len(candido)):
+      palm.add(list(candido)[o])
+  
+  for l in range(len(palm)):
+    say(list(palm[l])) # converts set into a list every each row.
+    schedule.every(3).minutes.do(passing()) # schedule its False.
+    message = hear.get["ts"]
+
+    while True:
+      time.sleep(1)
+
+      if "next" or "siguiente" is in hear.get["text"]:
+        
+        # siguiente palabra.
+
+        schedule.cancel(passing())
+        break
+
+      """
+        Still building it. [1st april'19, 11:30AM @ CCS, VE]
+      """
+
+      if 
+
+      try:
+        # if
+      finally:
+        continue
+
+
 
